@@ -7,8 +7,63 @@ generator db {
   provider = "go run github.com/steebchen/prisma-client-go"
 }
 
-model User {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String?
-  mail    String  @unique
+model ModalProjects {
+  id            String                @id @default(auto()) @map("_id") @db.ObjectId
+  clientName    String
+  projectName   String
+  projectUrl    String
+  tags          String
+  project       String
+  scopeWorkId   String                @db.ObjectId
+  galleryImages ProjectGalleryImage[]
+
+  scopeWork     ScopeOfWork           @relation(fields: [scopeWorkId], references: [id])
+}
+
+model ScopeOfWork {
+  id             String                @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  description    String
+  designComponent String
+  heroImage      String
+
+  project        ModalProjects[]
+}
+
+model ProjectGalleryImage {
+  id        String                @id @default(auto()) @map("_id") @db.ObjectId
+  projectId String                @db.ObjectId
+  url       String
+
+  project   ModalProjects         @relation(fields: [projectId], references: [id])
+}
+
+model ModalTeam {
+  id     String @id @default(uuid()) @map("_id")
+  name   String
+  post   String
+  linkedIn  String?
+  twitter   String?
+  github    String?
+  instagram String?
+}
+
+model ModalSEO {
+  id    String @id @default(uuid()) @map("_id")
+  url   String
+  value String
+}
+
+model ModalBlogs {
+  id    String @id @default(uuid()) @map("_id")
+  title String
+  desc  String
+  img   String
+}
+
+model ModalTestimonials {
+  id      String @id @default(uuid()) @map("_id")
+  name    String
+  client  String
+  content String
 }
