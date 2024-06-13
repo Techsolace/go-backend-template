@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 
@@ -10,13 +10,16 @@ import (
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	routes.SetupRoutes(router)
 
 	utils.SetTrustedProxies(router)
 	utils.SetupCORS(router)
 
-	router.NoRoute(func(ctx *gin.Context) { ctx.JSON(http.StatusNotFound, gin.H{}) })
+	router.NoRoute(utils.HandleNotFound)
 
-	router.Run(":8080")
+	port := utils.GetPort()
+	fmt.Printf("Listening to %v", port)
+	router.Run(":" + port)
 }
