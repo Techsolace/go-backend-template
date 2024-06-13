@@ -6,14 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 
 	routes "techsolace/router"
-	cors "techsolace/utils"
+	utils "techsolace/utils"
 )
 
 func main() {
 	router := gin.Default()
-
 	routes.SetupRoutes(router)
-	cors.SetupCORS(router)
+
+	utils.SetTrustedProxies(router)
+	utils.SetupCORS(router)
 
 	router.NoRoute(func(ctx *gin.Context) { ctx.JSON(http.StatusNotFound, gin.H{}) })
 

@@ -1,4 +1,4 @@
-package cors
+package utils
 
 import (
 	"github.com/gin-contrib/cors"
